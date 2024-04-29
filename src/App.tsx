@@ -1,10 +1,22 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+// 投稿データの型定義
+type Post = {
+  countUp: number;
+};
 
 function App() {
-  const [count, setCount] = useState(0)
+  const defaultValue: Post = { countUp: 1 };
+  const [count, setCount] = useState(defaultValue)
+  useEffect(() => {
+    //fetch('APIのエンドポイントを記述')
+    fetch('http://localhost:8000/ping')
+      .then(response => response.json())
+      .then(data => setCount(data))
+      .catch(error => console.error("Fetching data failed", error));
+  }, []);// 空の依存配列を渡すことで、コンポーネントのマウント時に一度だけ実行される
 
   return (
     <>
@@ -18,8 +30,10 @@ function App() {
       </div>
       <h1>Vite + React</h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+        <button onClick={() => setCount((count) => {
+          return count;
+        })}>
+          count is {count.countUp}
         </button>
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
