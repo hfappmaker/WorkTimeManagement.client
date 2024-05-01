@@ -1,34 +1,52 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import Box from '@mui/material/Box'
 import './Login.css'
-import { usePostsQuery } from './api/getValue'
+import { useValidateLoginUser } from './api/Login'
 import CircularProgress from '@mui/material/CircularProgress';
 // import Backdrop from '@mui/material/Backdrop';
 import Dialog from '@mui/material/Dialog';
-import { DialogContent } from '@mui/material'
-import { useState } from 'react'
+import { DialogContent, FilledInput, FormHelperText } from '@mui/material'
+import { useEffect, useState } from 'react'
 import axios from 'axios'
-import { useMutation } from "react-query"
+import { useMutation, useQuery } from "react-query"
+import useEpic from "./useEpic"
+import { interval, zip, empty } from "rxjs";
+import { map, mapTo, switchMap } from "rxjs/operators";
 // import Fade from '@mui/material/Fade';
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
-  const { isLoading, mutate } = useMutation(
-    () => axios.get('http://localhost:8000/ping'),
-    {
-      onSuccess: () => {
-        console.log("Success");
-      },
-    },
-  );
+  const { isLoading, isError, validateLoginUser } = useValidateLoginUser(email, password, (data) => {
+    console.log(data.isSuccess ? "Success" : "Failed")
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    mutate()
+    validateLoginUser();
   }
+
+  // useEpic(
+  //   (p) => {
+  //     const [email$, ] = p;
+  //     return email$;
+  //   },
+  //   {
+  //     next: () => {},
+  //     error: () => {},
+  //     complete: () => {},
+  //   },
+  //   [email, password]
+  // )
+
+  // useEffect(() => {
+  //   inputs.forEach((d, i) => {
+  //     inputs$Ref.current[i].next(d)
+  //   });
+  //   return () => { };
+  // }, inputs)
 
   return (
     <>
@@ -38,16 +56,16 @@ function Login() {
         </DialogContent>
       </Dialog>
       <form onSubmit={handleSubmit}>
-      <Box sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        '& .MuiTextField-root': { width: '35ch' },
-        button: { m: 1 },
-      }}>
-        <TextField id="input-mailaddress" label="メールアドレス" variant="outlined" margin="normal" type="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
-        <TextField id="input-password" label="パスワード" variant="outlined" type='password' value={password} onChange={(e) => setPassword(e.target.value)}/>
-        <Button variant="contained" type="submit">ログイン</Button>
-      </Box>
+        <Box sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          '& .MuiTextField-root': { width: '35ch' },
+          button: { m: 1 },
+        }}>
+          <TextField id="input-mailaddress" label="メールアドレス" variant="outlined" margin="normal" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+          <TextField id="input-password" label="パスワード" variant="outlined" type='password' value={password} onChange={(e) => setPassword(e.target.value)} />
+          <Button variant="contained" type="submit">ログイン</Button>
+        </Box>
       </form>
     </>
   )
