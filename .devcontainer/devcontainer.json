@@ -12,7 +12,7 @@
 		3000
 	],
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "sudo chown node node_modules && yarn install",
+	"postCreateCommand": "sudo chown node node_modules && sudo chown node dist && yarn install",
 	// Configure tool-specific properties.
 	"customizations": {
 		// Configure properties specific to VS Code.
@@ -27,6 +27,7 @@
 	// "remoteUser": "root"
 	"remoteUser": "node",
 	"mounts": [
-		"source=try-node-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume"
+		"source=try-node-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume",
+		"source=try-dist,target=${containerWorkspaceFolder}/dist,type=volume"
 	],
 }

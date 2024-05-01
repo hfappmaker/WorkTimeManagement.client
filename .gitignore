@@ -10,6 +10,10 @@ logs
 
 node_modules
 bower_components
+
+## Next.js ##
+.next
+next-env.d.ts
 dist
 
 *.sublime*
