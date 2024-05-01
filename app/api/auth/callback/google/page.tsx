@@ -1,5 +1,6 @@
 'use client'
 import { useQuery } from "react-query";
+import { auth } from "../../../../auth"
 import { httpGet } from "../../../../../common/fetch/http"
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import Button from '@mui/material/Button'
@@ -56,16 +57,19 @@ const useValidateLoginUser = (
 // }
 
 export default function Login() {
+    //const session = await auth()
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const { isLoading, isError, validateLoginUser } = useValidateLoginUser(email, password, (data) => {
         console.log(data.isSuccess ? "Success" : "Failed")
     });
+    //console.log(session)
+
     const handleSubmit = (e) => {
         e.preventDefault();
         validateLoginUser();
     }
-
+    //if (session?.user?.email != null) {
     return (
         <>
             <Dialog aria-describedby="progress" open={isLoading} aria-busy={isLoading} PaperProps={{ style: { backgroundColor: 'transparent', boxShadow: 'none' } }}>
@@ -88,3 +92,6 @@ export default function Login() {
         </>
     )
 }
+//else {
+//return (<h2>deny</h2>);
+//}
