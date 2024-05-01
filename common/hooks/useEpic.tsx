@@ -34,3 +34,23 @@ export default function useEpic<T extends ReadonlyArray<unknown>, U>(epic: (para
     return () => { };
   }, inputs);
 }
+
+    // useEpic(
+    //   (p) => {
+    //     const [email$, ] = p;
+    //     return email$;
+    //   },
+    //   {
+    //     next: () => {},
+    //     error: () => {},
+    //     complete: () => {},
+    //   },
+    //   [email, password]
+    // )
+
+    // useEffect(() => {
+    //   inputs.forEach((d, i) => {
+    //     inputs$Ref.current[i].next(d)
+    //   });
+    //   return () => { };
+    // }, inputs)
