@@ -2,7 +2,7 @@ import { auth } from "./auth";
 
 export default auth((req) => {
   if (!req.auth) {
-    return Response.redirect("http://localhost:3000/login");
+    return Response.redirect(`${process.env.NEXTAUTH_URL}/login`);
   }
 });
 

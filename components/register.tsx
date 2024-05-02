@@ -1,21 +1,25 @@
 import Button from "@mui/material/Button"
-import { signOut } from "../auth"
 import React from "react"
+import { signOut } from "../auth"
 
-export default function SignOut() {
+const register = async () => {
+  await signOut({ redirect: true, redirectTo: `${process.env.NEXTAUTH_URL}/login` })
+}
+
+export default function Register() {
   return (
     <form
       action={async () => {
         "use server"
         try {
-          await signOut({ redirect: true, redirectTo: `${process.env.NEXTAUTH_URL}/login` })
+          await register()
         } catch (error) {
           console.log(error)
           throw error // Rethrow all other errors
         }
       }}
     >
-      <Button type="submit">SignOut</Button>
+      <Button type="submit" >Register</Button>
     </form>
   )
 } 
