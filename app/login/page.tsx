@@ -1,6 +1,14 @@
 import React from "react";
-import Login from "./login"
+import SignIn from "../../components/sign-in";
+import { auth } from "../../auth";
+import { redirect } from 'next/navigation'
 
-export default function Page() {
-  return <Login/>;
+export default async function Page() {
+  const session = await auth()
+  if (session) {
+    redirect("/dashboard")
+  }
+  else {
+    return <SignIn />;
+  }
 }
